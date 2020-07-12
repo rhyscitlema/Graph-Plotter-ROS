@@ -20,7 +20,7 @@
 void userinterface_start ()
 {
     int count=0;
-    mchar str[100];
+    wchar str[100];
 
 
     /* initialise system utilities */

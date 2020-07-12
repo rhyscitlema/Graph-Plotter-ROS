@@ -30,7 +30,7 @@ void fputc0 (char chr, void *SO)                 // SO = some_object
     call_putchar(SO, chr);
 }
 
-void fputc1 (mchar chr, void *SO)                // SO = some_object
+void fputc1 (wchar chr, void *SO)                // SO = some_object
 {
     PUTCHAR_FUNCTION call_putchar = get_putchar_function(SO);
     call_putchar(SO, (char)chr);
@@ -43,16 +43,16 @@ void fputs0 (const char* str, void *SO)                // SO = some_object
     while(*str) { call_putchar(SO, (char)*str); str++; } // no newline at the end
 }
 
-void fputs1 (const mchar* str, void *SO)                 // SO = some_object
+void fputs1 (const wchar* str, void *SO)                 // SO = some_object
 {
     PUTCHAR_FUNCTION call_putchar = get_putchar_function (SO);
     if(!str) return;
     while(*str) { call_putchar(SO, (char)*str); str++; } // no newline at the end
 }
 
-void fputs4 (const mchar* str, int length, void *SO)      // SO = some_object
+void fputs4 (const wchar* str, int length, void *SO)      // SO = some_object
 {
-    const mchar* str_end;
+    const wchar* str_end;
     PUTCHAR_FUNCTION call_putchar;
     if(length < 0) { fputs1 (str, SO); return; }
     call_putchar = get_putchar_function (SO);
@@ -67,16 +67,16 @@ void fputs4 (const mchar* str, int length, void *SO)      // SO = some_object
 void putc0 (char chr)
 { fputc0(chr,0); }
 
-void putc1 (mchar chr)
+void putc1 (wchar chr)
 { fputc1(chr,0); }
 
 void puts0 (const char* str)
 { fputs0(str,0); }
 
-void puts1 (const mchar* str)
+void puts1 (const wchar* str)
 { fputs1(str,0); }
 
-void puts4 (const mchar* str, int length)
+void puts4 (const wchar* str, int length)
 { fputs4(str,length,0); }
 
 

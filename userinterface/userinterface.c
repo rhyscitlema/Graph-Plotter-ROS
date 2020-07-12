@@ -15,15 +15,15 @@ void userinterface_display_camera (Camera *cmr, bool exists)
 {
 }
 
-void userinterface_display_object (Object3D *obj, bool exists)
+void userinterface_display_object (Object *obj, bool exists)
 {
 }
 
-void userinterface_display_other  (const mchar* text)
+void userinterface_display_other  (const wchar* text)
 {
 }
 
-void display_error_message (const mchar* error_message)
+void display_error_message (const wchar* error_message)
 { puts1(error_message); }
 
 
@@ -38,16 +38,16 @@ void userinterface_process ()
 
 
 
-mchar* userinterface_get_text (UI_ITEM ui_item, mchar* buffer, int length)
+wchar* userinterface_get_text (UI_ITEM ui_item, wchar* buffer, int length)
 {
     return NULL;
 }
 
-void   userinterface_set_text (UI_ITEM ui_item, const mchar* buffer, int length)
+void   userinterface_set_text (UI_ITEM ui_item, const wchar* buffer, int length)
 {
 }
 
-void   userinterface_release_text (mchar* buffer)
+void   userinterface_release_text (wchar* buffer)
 {
 }
 

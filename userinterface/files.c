@@ -15,14 +15,14 @@
 
 
 
-int Savefile (const mchar* file_name, const mchar* file_content)
+int Savefile (const wchar* file_name, const wchar* file_content)
 {
     return 0;
 }
 
 
 
-int Openfile (const mchar* file_name, mchar* file_content)
+int Openfile (const wchar* file_name, wchar* file_content)
 {
     return 0;
 }
@@ -30,9 +30,9 @@ int Openfile (const mchar* file_name, mchar* file_content)
 
 
 // load all graphs and cameras from a file
-int load_all_objects (const mchar* fileName)
+int load_all_objects (const wchar* fileName)
 {
-    /*mchar fileContent [BUFFER_SIZE];
+    /*wchar fileContent [BUFFER_SIZE];
 
     if(fileName != NULL)
     {
@@ -50,7 +50,7 @@ int load_all_objects (const mchar* fileName)
     return TRUE;*/
 
 
-    mchar str[10000];
+    wchar str[10000];
 
     //strcpy0 (str, Initial_graphs_and_cameras);
     //graphplotter_load_all_objects(str);

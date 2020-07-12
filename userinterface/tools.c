@@ -10,9 +10,9 @@
 
 void tools_initialise ()
 {
-    mchar* fileContent;
-    mchar buffer[BUFFER_SIZE];
-    mchar filePathName[100];
+    wchar* fileContent;
+    wchar buffer[BUFFER_SIZE];
+    wchar filePathName[100];
 
     strcpy0 (filePathName, "Resources/Messages.txt");
 
