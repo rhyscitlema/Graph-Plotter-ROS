@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual C++ Express 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hal", "hal\hal.vcproj", "{F9978721-33F3-494B-9AF6-7B88F8606D23}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kernel", "kernel.vcproj", "{1B7E376D-8D69-4FED-9E7F-2B1A50B1ED36}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F9978721-33F3-494B-9AF6-7B88F8606D23} = {F9978721-33F3-494B-9AF6-7B88F8606D23}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F9978721-33F3-494B-9AF6-7B88F8606D23}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F9978721-33F3-494B-9AF6-7B88F8606D23}.Debug|Win32.Build.0 = Debug|Win32
+		{F9978721-33F3-494B-9AF6-7B88F8606D23}.Release|Win32.ActiveCfg = Release|Win32
+		{F9978721-33F3-494B-9AF6-7B88F8606D23}.Release|Win32.Build.0 = Release|Win32
+		{1B7E376D-8D69-4FED-9E7F-2B1A50B1ED36}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1B7E376D-8D69-4FED-9E7F-2B1A50B1ED36}.Debug|Win32.Build.0 = Debug|Win32
+		{1B7E376D-8D69-4FED-9E7F-2B1A50B1ED36}.Release|Win32.ActiveCfg = Release|Win32
+		{1B7E376D-8D69-4FED-9E7F-2B1A50B1ED36}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

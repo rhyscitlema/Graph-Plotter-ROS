@@ -1,0 +1,10 @@
+
+ - hardware/keyboard.h : addition of allegro/keyboard.h
+
+ - include/my_stdint.h : NULL definition removed
+
+ - kernelentry.c <=> main.c :
+
+ - in kernelentry.c
+    - addition of FREEMEMORY
+    - interchange screen_install and hardware_initialise
