@@ -9,7 +9,7 @@
 
 // We can test new architecture here as needed
 
-#include "_stdint.h"
+#include <_stdint.h>
 
 
 // i86 defines 256 possible interrupt handlers (0-255)
@@ -44,6 +44,8 @@ extern void i86_install_i_handler (uint32b i, uint16b flags, uint16b sel, FUNCTI
 
 // initialise basic idt
 extern void i86_idt_initialise (uint16b codeSel);
+
+
 
 
 #endif

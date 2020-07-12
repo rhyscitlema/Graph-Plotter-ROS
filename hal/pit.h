@@ -9,7 +9,7 @@
 #error "[pit.h] platform not implimented. Define ARCH_X86 for HAL"
 #endif
 
-#include "_stdint.h"
+#include <_stdint.h>
 
 
 //-----------------------------------------------
@@ -70,9 +70,9 @@ extern uint32b i86_pit_get_tick_count ();
 extern void i86_pit_start_counter (uint32b freq, uint8b counter, uint8b mode);
 
 // initialise minidriver
-extern void i86_pit_initialise ();
+extern void _cdecl i86_pit_initialise ();
 
 // Test if interface is initialised
-extern bool i86_pit_is_initialised ();
+extern bool _cdecl i86_pit_is_initialised ();
 
 #endif

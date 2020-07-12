@@ -25,11 +25,12 @@ static GDT_DESCRIPTOR gdtarr [MAX_DESCRIPTORS];
 
 static struct _gdtr gdtr;   // gdtr data
 
+static void gdt_install ();
 static void gdt_install ()
 {
-    ASM_BEG
-    ASM(lgdt [gdtr])
-    ASM_END
+    #ifdef _MSC_VER
+    _asm lgdt [gdtr]
+    #endif
 }
 
 // Setup a descriptor in the Global Descriptor Table

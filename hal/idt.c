@@ -111,9 +111,9 @@ static void i86_i18_handler ()
 // installs idtr into processors idtr register
 static void idt_install ()
 {
-    ASM_BEG
-    ASM(lidt [idtr])
-    ASM_END
+    #ifdef _MSC_VER
+    _asm lidt [idtr]
+    #endif
 }
 
 // returns interrupt descriptor

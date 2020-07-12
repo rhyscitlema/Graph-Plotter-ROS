@@ -6,7 +6,7 @@
     the basic memory map for the system and permission levels
 ****************************************************************************/
 
-#include "_stdint.h"
+#include <_stdint.h>
 
 // maximum amount of descriptors allowed
 #define MAX_DESCRIPTORS 3

@@ -1,0 +1,258 @@
+
+Square matrix multiplication in quadratic time
+
+****************************************************************
+   Introduction
+****************************************************************
+
+Square matrix multiplication is the product of two n-by-n matrices. Each matrix has n2 entries. As will be seen later, the naive algorithm for this operation performs in O(n^3) running time. However there exist better algorithms like the Strassen algorithm that performs in O(n^2.8074) running time. It is highly suspected that there may be one or more algorithms with O(n^2) performance.
+
+Actually the algorithm discussed here performs in O(n^2) running time. Precisely the total number of operations is at most (11*n^2+n+3), as will be seen later. But this is true only for the special case where inputs are all natural numbers or zero. I was unable to improve the algorithm such that it accepts real numbers inputs. However it often involves computation on very large numbers. Precisely, when the largest entry is equal to n, the storage space complexity is O(n log n).
+
+I have used 'square' matrix multiplication only for convenience. Actually the algorithm can be used for any matrix multiplication of arbitrary input sizes. Precisely, if the two input matrices have sizes n-by-v and v-by-m respectively, then the total number of operations will be at most (3nm + 4v(n+m) + 2m-n+3). In general then, the algorithm does matrix multiplication in linear time with matrix size. Download the available implementation by accessing the attached file.
+
+In this article, the illustration, analysis of correctness and performance of the algorithm are done simultaneously. Note carefully that in the analysis of performance, the addition, subtraction, multiplication, division and modulo (remainder) operations between ANY two numbers are assumed to each constitute a unit operation that takes a unit of time. The special case of n=3 will be used all through.
+
+
+****************************************************************
+   Contents
+****************************************************************
+
+    1 The naive algorithm
+    2 The basic idea
+    3 Obtaining the RHS values in quadratic time
+    4 Base n numeral system
+    5 When inputs are natural numbers or zero
+    6 Constraints over a better algorithm
+    7 References
+
+
+
+****************************************************************
+   The naive algorithm
+****************************************************************
+
+Let A and M be two 3-by-3 matrices, where:
+        a b c
+    A = d e f
+        g h i
+and
+        m n o
+    M = p q r
+        s t u
+The square matrix multiplication, A x M, results to another 3-by-3 matrix, say R.
+
+Note: differentiate between the entry n in M, and the size n of the matrices!
+
+By using the naive algorithm for matrix multiplication, the following is obtained:
+                a b c       m n o       (am+bp+cs)  (an+bq+ct)  (ao+br+cu)
+    A x M   =   d e f   x   p q r    =  (dm+ep+fs)  (dn+eq+ft)  (do+er+fu)   =   R
+                g h i       s t u       (gm+hp+is)  (gn+hq+it)  (go+hr+iu)
+
+Performance:
+Every element of the matrix R is obtained by doing 2n operations. There are n2 elements. This forms a total of 2n * n^2 = 2n^3 operations. Therefore the performance is O(n^3).
+
+
+
+****************************************************************
+   The basic idea
+****************************************************************
+
+Consider the matrices A, M and R discussed above.
+
+The sums of the rows of R are:
+(am+bp+cs) + (an+bq+ct) + (ao+br+cu)  =  a(m+n+o) + b(p+q+r) + c(s+t+u)
+(dm+ep+fs) + (dn+eq+ft) + (do+er+fu)  =  d(m+n+o) + e(p+q+r) + f(s+t+u)
+(gm+hp+is) + (gn+hq+it) + (go+hr+iu)  =  g(m+n+o) + h(p+q+r) + i(s+t+u)
+
+Also, the sums of the columns of R are:
+    (am+bp+cs)    (an+bq+ct)    (ao+br+cu)
+        +             +            +
+    (dm+ep+fs)    (dn+eq+ft)    (do+er+fu)
+        +             +            +
+    (gm+hp+is)    (gn+hq+it)    (go+hr+iu)
+        =             =            =
+    m(a+d+g)      n(a+d+g)      o(a+d+g)
+        +             +            +
+    p(b+e+h)      q(b+e+h)      r(b+e+h)
+        +             +            +
+    s(c+f+i)      t(c+f+i)      u(c+f+i)
+
+From here on only the case of the rows of R will be considered. However what is to be done is also possible for the case of the columns of R.
+
+Now, consider certain magical coefficients x, y and z.
+Yes, in this article the best unknowns are used as coefficients, while the best coefficients are used as unknowns!!!
+These magical coefficients are such that we have:
+
+(am+bp+cs)x + (an+bq+ct)y + (ao+br+cu)z  =  a(mx+ny+oz) + b(px+qy+rz) + c(sx+ty+uz)
+(dm+ep+fs)x  + (dn+eq+ft)y +  (do+er+fu)z  =  d(mx+ny+oz) + e(px+qy+rz) + f(sx+ty+uz)
+(gm+hp+is)x  + (gn+hq+it)y  + (go+hr+iu)z   =  g(mx+ny+oz) + h(px+qy+rz) + i(sx+ty+uz)
+
+As will be seen soon, it is possible to have all the Right-Hand-Side (RHS) values in O(n^2) running time. Note that these are essentially 'numbers'.
+The basic idea is to choose the coefficients x, y and z, such that an algorithm is designed to use them, together with the RHS values, for the ultimate aim of obtaining the unknowns in the Left-Hand-Side (LHS).
+Of course, the unknowns in the LHS, that is what is found in parentheses, are the elements of the resulting matrix R.
+
+So a problem is as follows:
+You are in a situation where you choose three values x, y and z, such that when used with three unknowns a, b and c, you obtain a value k = ax+by+cz. The task is to use the three values x, y and z, together with the value k, so to find the unknowns a, b and c. The algorithm and the chosen values of x, y and z should be such that there is always only one possible solution for the unknowns a, b and c. See also.
+
+
+
+****************************************************************
+   Obtaining the RHS values in quadratic time
+****************************************************************
+
+There are a total of n Right-Hand-Side (RHS) values. Note that these are essentially 'numbers'. This section is mainly characterised by the storage of already computed values in memory so to avoid recomputing them.
+
+The matrix M is of the form:
+        m n o
+    M = p q r
+        s t u
+The array containing the magical coefficients {x, y, z} is stored in memory.
+
+Now, consider a vector/array S, of the form:
+    S = { (mx+ny+oz) , (px+qy+rz) , (sx+ty+uz) }
+Every element of the array S is obtained by doing 2n operations. There are n elements. This forms a total of 2n * n = 2n2 operations.
+It is important for the array S to be stored in memory as it is to be used n times.
+
+The matrix A is of the form:
+        a b c
+    A = d e f
+        g h i
+The array S is stored in memory.
+
+Now, consider a vector/array T, of the form:
+    T = {   a(mx+ny+oz) + b(px+qy+rz) + c(sx+ty+uz) ,
+            d(mx+ny+oz) + e(px+qy+rz) + f(sx+ty+uz) ,
+            g(mx+ny+oz) + h(px+qy+rz) + i(sx+ty+uz)   }
+Every element of the array T is obtained by doing 2n operations. There are n elements. This forms a total of 2n * n = 2n2 operations.
+It is important for the array T to be stored in memory as it is to be used n times, possibly more.
+
+The array T contains the RHS values. Every element of T will be used at least n times so to obtain the n unknowns found in the corresponding row of the resulting matrix R. The overall number of operations used to obtain T is 2n2 + 2n2 = 4n2. Therefore the performance here is O(n^2).
+
+
+
+****************************************************************
+   Base n numeral system
+****************************************************************
+
+Recall the problem that was previously mentioned about some chosen values x, y, z, some unknowns a, b, c, and a certain value k = ax+by+cz. The problem can be solved when the unknowns a, b and c are all natural numbers including zero. In this case the 'base n numeral system' is used. The notion of numeral system will not be discussed here.
+
+In the base n numeral system, any non-negative integer can be correctly and distinctly represented as a sequence of whole numbers, also called digits. For example the number 'five' is represented in base 10 as '5', in base 3 as '12', and in base 2 as '101'. All digits are whole numbers between 0 and n-1 inclusive. As the word 'digit' is usually known to refer to a number between 0 and 9, it will not be used anymore so to avoid confusion.
+
+Let I be the non-negative integer represented by a sequence, s, of the form {s0, s1, s2, ..., sm-2, sm-1}. slevel in s is a whole number between 0 and n-1 inclusive, and is found at a certain level. There are m levels from 0 to m-1, where m is the size of the sequence. Let I be 'five'. Then in base 10, s = {5} = {0, 5} = {0, 0, 5} ... for different sizes m. In base 3, s = {1, 2}... In base 2, s = {1, 0, 1}...
+
+
+Given the base n, the sequence s and the size m, the equation below finds I:
+    I  =  s0*n0  +  s1*n1  +  s2*n2  + … +  sm-2*nm-2  +  sm-1*nm-1
+Proof:
+Proof of that there is only one possible representation of a non-negative integer I as a sequence s, under the equation above.
+
+First it should be noted that the largest computation of I with respect to the equation is for the sequence {n-1, n-1, ... m times}, where I = nm-1.
+
+Now let any two sequences {sa,0 , sa,1 , sa,2 , ..., sa,m-2 , sa,m-1} and {sb,0 , sb,1 , sb,2 , ..., sb,m-2 , sb,m-1} be numbered Ia and Ib respectively, such that Ia=Ib and therefore Ia-Ib=0.
+=> (sa,0-sb,0)*n0 + (sa,1-sb,1)*n1 + (sa,2-sb,2)*n2 + … + (sa,m-2-sb,m-2)*nm-2 + (sa,m-1-sb,m-1)*nm-1 = 0 .
+
+It turns out that for the above equation to hold, every term must evaluate to zero. Consider the worst case scenario where the term (sa,m-1-sb,m-1)*nm-1 becomes equal to (1)*nm-1, meanwhile the terms (sa,0-sb,0)*n0, (sa,1-sb,1)*n1, (sa,2-sb,2)*n2 , … and (sa,m-2-sb,m-2)*nm-2 are all negative. The later all add up to form the most negative possible value of -(nm-1-1). In this worst case the value of I is equal to ( nm-1 - (nm-1-1) ) = 1 , which is different from 0.
+
+Only the values in brackets can evaluate to zero. Consequently for the equation to hold, sa,0=sb,0 , sa,1=sb,1 , sa,2=sb,2 , ... , sa,m-2=sb,m-2 and sa,m-1=sb,m-1. Therefore the two sequences are the same. It follows that there is only one possible representation of I as a sequence s.
+
+
+Also, given the base n, the number I, and a particular level in s, the equation below finds slevel:
+    slevel  =  [ I / nlevel ]  -  [ I / nlevel+1 ]*n , where [x] = floor(x).
+Proof:
+Consider true that I  =  s0*n0  +  s1*n1  +  s2*n2  + … +  sm-2*nm-2  +  sm-1*nm-1.
+Now let y such that:
+      y  =  ([ I / n0 ] - [ I / n1 ]*n)*n0 + ([ I / n1 ] - [ I / n2 ]*n)*n1 + ([ I / n2 ] - [ I / n3 ]*n)*n2 + … + ([ I / nm-2 ] - [ I / nm-1 ]*n)*nm-2 + ([ I / nm-1 ] - [ I / nm ]*n)*nm-1
+Simplifying y,
+ => y = [ I / n0 ]*n0 - [ I / n1 ]*n1 + [ I / n1 ]*n1 - [ I / n2 ]*n2 + [ I / n2 ]*n2 - [ I / n3 ]*n3 + ... + [ I / nm-2 ]*nm-2 - [ I / nm-1 ]*nm-1 + [ I / nm-1 ]*nm-1 - [ I / nm ]*nm
+After massive cancellation,
+ => y = [ I / n0 ]*n0 - [ I / nm ]*nm
+But I < nm,
+ => y = I - 0
+ => y = I
+Since y=I, it follows that slevel  =  [ I / nlevel ]  -  [ I / nlevel+1 ]*n.
+
+By simplification, it can be shown that:
+    [ (I mod nlevel+1) / nlevel ]  =  [ I / nlevel ] - [ I / nlevel+1 ]*n   , where [x] = floor(x).
+
+
+Now the problem initially mentioned can be solved.
+
+Essentially, we have: k = ax+by+cz, where all are non-negative integers.
+By analogy, we have: I = a*n0 + b*n1 + c*n2.
+Therefore we have: s={a, b, c}, k=I, x=n0, y=n1 and z=n2.
+The base, n, is any integer greater than a, b and c.
+
+
+
+****************************************************************
+When inputs are natural numbers or zero
+****************************************************************
+
+Essentially, we have:
+(am+bp+cs)x + (an+bq+ct)y + (ao+br+cu)z  =  a(mx+ny+oz) + b(px+qy+rz) + c(sx+ty+uz)
+(dm+ep+fs)x  + (dn+eq+ft)y +  (do+er+fu)z  =  d(mx+ny+oz) + e(px+qy+rz) + f(sx+ty+uz)
+(gm+hp+is)x  + (gn+hq+it)y  + (go+hr+iu)z   =  g(mx+ny+oz) + h(px+qy+rz) + i(sx+ty+uz)
+
+Note: differentiate between the entry n in M, and the size n of the matrices!
+
+It is assumed that all inputs are natural numbers or zero. Therefore any computation here will result to a  natural number or zero.
+
+Following from the previous section, the choices of the coefficients x, y and z are such that:
+x = L0,
+y = L1,
+z = L2,
+where L is a number larger than any element of the resulting matrix R.
+
+Let g be the largest input of both matrices A and M. g can be obtained by going through the two matrices, taken 4n2 comparison+act operations.
+It is clear that L, where L = (g2)(3)+1, is always larger than any element of the resulting matrix R. Recall n=3. This constitutes 4 extra operations (not 3 operations, in which case the analyses of performances made so far will have a problem!).
+
+The coefficients x, y and z can now be obtained. Since they are stored in memory they can be computed one after another. That is x is used to compute y, then y is used to compute z. This forms an additional 2n-1 operations.
+
+The array T can now be obtained, taking 4n2 operations. This is where the largest numbers in the algorithm are encountered.
+However is it really necessary for the elements of T to be essentially 'numbers'...?!
+
+Following from the previous section, an element in T can be regarded as I. In this case the corresponding row of the resulting matrix R will be the sequence s that represents I.
+If for example:
+    T[0]  =  a(mx+ny+oz) + b(px+qy+rz) + c(sx+ty+uz) ,
+then:
+    (am+bp+cs)  = [ ( T[0] mod y) / x ]
+    (an+bq+ct)  = [ ( T[0] mod z) / y ]
+    (ao+br+cu)  = [ ( T[0] ) / z ] (recall: any element of T is < Ln, so ( T[0] mod Ln ) = T[0] )
+
+This forms 3n-1 operations (not 2n-1, in which case the analyses of performances made so far will have a problem!).
+For all n rows of R, there is a total of (3n-1)*n = 3n2-n operations.
+
+Combining all the individual performances that have been analised, the overall total number of operations undertaken by the algorithm = 4n2 + 4 + 2n-1 + 4n2 + 3n2-n = (11n2+n+3). Therefore the performance of the algorithm is O(n^2). However when the largest entry, g, is equal to n, the storage space complexity is O(n log n).
+
+Download the available implementation of the algorithm by accessing the attached file.
+
+
+
+****************************************************************
+Constraints over a better algorithm
+****************************************************************
+
+Recall the problem that was previously mentioned about some chosen values x, y, z, some unknowns a, b, c, and a certain value k = ax+by+cz. The main difficulty in this problem lies on the fact that a, b and c can be any value. For the special case where they are all whole numbers including zero, the solution that was previously mentioned regarding the base n numeral system, is the best possible solution. There is no solution for the case where a, b and c are any real numbers. Essentially, there is no numeral system under the set of real numbers (so far I just assume it should be easy to prove this fact).
+
+As far as matrix multiplication is concerned, there is to wonder whether the elements of the resulting matrix R can be any values. If so then, based on the basic idea, there shouldn't be any better algorithm than the one discussed here. And also there shouldn't be any algorithm for the case where real numbers are involved. However, there is to wonder whether the elements of R are not just any values, but values with a certain relationship with the input values of the matrices A and M, the later which are of course any values. If so then there might be a better algorithm. So at the very least, based on the basic idea, a better algorithm should make use of a characteristic true to matrix multiplication.
+
+Actually there is a characteristic of matrix multiplication. So far only the case of the rows of R was considered. But the case of the columns of R could have been used as well. It turns out that both cases share elements of the resulting matrix R. That is for example:
+T[0] for rows      = a(mx+ny+oz) + b(px+qy+rz) + c(sx+ty+uz)  =  (am+bp+cs)x + (an+bq+ct)y + (ao+br+cu)z
+T[0] for columns = m(ax+dy+gz) + p(bx+ey+hz) + s(cx+fy+iz)  =  (am+bp+cs)x + (dm+ep+fs)y + (gm+hp+is)z
+
+T[0] for both rows and columns share one unknown element of R, which is (am+bp+cs).
+This characteristic of matrix multiplication might help for the design of a better algorithm.
+
+
+
+****************************************************************
+   References
+****************************************************************
+
+Coursera online course. Algorithms: Design and Analysis, Part 1.
+https://www.coursera.org/course/algo
+
+http://en.wikipedia.org/wiki/Matrix_multiplication
+
+

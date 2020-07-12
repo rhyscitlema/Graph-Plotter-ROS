@@ -5,7 +5,7 @@
     8237 ISA Direct Memory Access Controller (DMAC)
 ************************************************************************/
 
-#include "_stdint.h"
+#include <_stdint.h>
 
 
 //2 DMACs, 32 bit master & 16bit slave each having 8 channels

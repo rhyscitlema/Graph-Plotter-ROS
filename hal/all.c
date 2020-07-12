@@ -1,7 +1,0 @@
-#include "hal.c"
-#include "cpu.c"
-#include "dma.c"
-#include "gdt.c"
-#include "idt.c"
-#include "pic.c"
-#include "pit.c"

@@ -50,7 +50,7 @@
 				EnableIntrinsicFunctions="false"
 				FavorSizeOrSpeed="2"
 				OmitFramePointers="true"
-				AdditionalIncludeDirectories="include; ../includes/userinterface; ../includes/graphplotter3d; ../includes/mfet_calculator; ../includes/standardlib; ../includes/fonttexts;"
+				AdditionalIncludeDirectories="include; ../includes/userinterface; ../includes/graphplotter3d; ../includes/calculatorforall; ../includes/standardlib; ../includes/fonttexts;"
 				PreprocessorDefinitions="ARCH_X86"
 				IgnoreStandardIncludePath="false"
 				StringPooling="false"

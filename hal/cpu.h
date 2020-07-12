@@ -1,10 +1,12 @@
 #ifndef _CPU_H_INCLUDED
 #define _CPU_H_INCLUDED
-/*
+/****************************************************************************
     cpu.h
-*/
+****************************************************************************/
+
 
 #include "regs.h"
+
 
 extern void i86_cpu_initialise ();  // initialise the processors
 

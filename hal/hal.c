@@ -37,45 +37,39 @@ void hal_restart ()         // restart hardware devices
 { i86_cpu_restart(); }
 
 void  enable_ints ()        // enable all hardware interrupts
-{   ASM_BEG
-    ASM(sti)
-    ASM_END
-}
+{ _asm sti }
 
 void  disable_ints ()       // disable all hardware interrupts
-{   ASM_BEG
-    ASM(cli)
-    ASM_END
-}
+{ _asm cli }
 
 
 uint8b inportb (uint16b portid)  // read byte from device using port mapped io
 {
-    ASM_BEG
-    ASM(mov dx, word ptr [portid])
-    ASM(in  al, dx)
-    ASM(mov byte ptr [portid], al)
-    ASM_END
+    _asm {
+    mov dx, word ptr [portid]
+    in  al, dx
+    mov byte ptr [portid], al
+    }
     return (uint8b)portid;
 }
 
 void  outportb (uint16b portid, uint8b value)    // write byte to device through port mapped io
 {
-    ASM_BEG
-    ASM(mov al, byte ptr [value])
-    ASM(mov dx, word ptr [portid])
-    ASM(out dx, al)
-    ASM_END
+    _asm {
+    mov al, byte ptr [value]
+    mov dx, word ptr [portid]
+    out dx, al
+    }
 }
 
 // delay a bit
 void delayABit()
 {
-    ASM_BEG
-    ASM(mov ecx, 0xFF)
-    ASM(delay:)
-    ASM(loop delay)
-    ASM_END
+    _asm {
+    mov ecx, 0xFF
+    delay:
+    loop delay
+    }
 }
 
 // enable interrupt request
@@ -134,7 +128,7 @@ void sound (uint frequency)      // output sound to speaker
 
 
 
-extern int puts1 (const char* string);
+extern int puts0 (const char* string);
 extern void screen_refresh ();
 
 void hal_fault (const char* fault)
@@ -143,7 +137,8 @@ void hal_fault (const char* fault)
     disable_ints();
 
     // print fault message and halt
-    puts1 ("\n ***  Hardware failure *** : ");
-    puts1 (fault);
+    puts0 ("\n ***  Hardware failure *** : \n");
+    puts0 (fault);
+    puts0 ("\n");
     screen_refresh();
 }
